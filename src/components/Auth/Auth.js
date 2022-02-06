@@ -9,13 +9,15 @@ import {
 } from "@material-ui/core";
 import { GoogleLogin } from "react-google-login";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import {useDispatch}  from "redux";
+
 import useStyles from "./styles";
 import Input from "./Input";
 import Icon from "./Icon";
 
 const Auth = () => {
   const classes = useStyles();
-
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const [isSignup, setIsSignup] = useState(true);
 
@@ -29,8 +31,20 @@ const Auth = () => {
     isSignup ? setIsSignup(false) : setIsSignup(true);
     handleShowPassword(false);
   };
-  const googleSuccess = () => {};
-  const googleFailure = () => {};
+  const googleSuccess = async (res) => {
+    const result = res?.profileObj;
+    const token = res?.tokenId;
+
+    try{
+     await dispatch({type:"AUTH" , data:{result, token}});
+    }catch(error){
+      console.log(error)
+    }
+    // await console.log(res);
+  };
+  const googleFailure = (error) => {
+    console.log(error);
+  };
   return (
     <Container component="main" maxWidth="xs">
       <Paper className={classes.paper} elevation={3}>
@@ -93,19 +107,19 @@ const Auth = () => {
             render={(renderProps) => (
               <Button
                 className={classes.googleButton}
+                onClick={renderProps.onClick}
                 color="primary"
                 fullWidth
-                onClick={renderProps.onClick}
                 // disabled={renderProps.disabled}
                 startIcon={<Icon />}
                 variant="contained"
               >
-                Google Sign
+                Google Sign In
               </Button>
             )}
             onSuccess={googleSuccess}
             onFailure={googleFailure}
-            cookiePolicy="single_host_orgin"
+            cookiePolicy={"single_host_origin"}
           />
           <Grid container justifyContent="flex-end">
             <Grid item>
