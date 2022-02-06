@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import {
   Avatar,
   Button,
@@ -9,7 +10,7 @@ import {
 } from "@material-ui/core";
 import { GoogleLogin } from "react-google-login";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import {useDispatch}  from "redux";
+import { useDispatch } from "react-redux";
 
 import useStyles from "./styles";
 import Input from "./Input";
@@ -18,6 +19,7 @@ import Icon from "./Icon";
 const Auth = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const history = useHistory();
   const [showPassword, setShowPassword] = useState(false);
   const [isSignup, setIsSignup] = useState(true);
 
@@ -35,10 +37,12 @@ const Auth = () => {
     const result = res?.profileObj;
     const token = res?.tokenId;
 
-    try{
-     await dispatch({type:"AUTH" , data:{result, token}});
-    }catch(error){
-      console.log(error)
+    try {
+      await dispatch({ type: "AUTH", data: { result, token } });
+
+      history.push("/");
+    } catch (error) {
+      console.log(error);
     }
     // await console.log(res);
   };
