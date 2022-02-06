@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Avatar,
   Button,
@@ -19,7 +19,7 @@ import Icon from "./Icon";
 const Auth = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [isSignup, setIsSignup] = useState(true);
 
@@ -40,7 +40,7 @@ const Auth = () => {
     try {
       await dispatch({ type: "AUTH", data: { result, token } });
 
-      history.push("/");
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
