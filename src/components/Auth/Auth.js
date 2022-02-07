@@ -15,19 +15,40 @@ import { useDispatch } from "react-redux";
 import useStyles from "./styles";
 import Input from "./Input";
 import Icon from "./Icon";
+import { signin, signup } from "../../actions/auth";
+
+const initialState = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+  confirmPassword: ""
+};
 
 const Auth = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
   const [isSignup, setIsSignup] = useState(true);
-
+  const [formData, setFormData] = useState(initialState);
   const handleShowPassword = () =>
     setShowPassword((prevShowPassword) => !prevShowPassword);
 
-  const handleSubmit = () => {};
-  const handleChange = () => {};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (isSignup) {
+      dispatch(signup(formData, navigate));
+    } else {
+      dispatch(signin(formData, navigate));
+    }
+
+    console.log(formData);
+  };
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
   const switchMode = (e) => {
     // setIsSignup((prevIsSignup)=> !prevIsSignup);
     isSignup ? setIsSignup(false) : setIsSignup(true);
@@ -61,14 +82,14 @@ const Auth = () => {
             {isSignup && (
               <>
                 <Input
-                  name="firstname"
+                  name="firstName"
                   label="First Name"
                   handleChange={handleChange}
                   autoFocus
                   half={true}
                 />
                 <Input
-                  name="lastname"
+                  name="lastName"
                   label="Last Name"
                   handleChange={handleChange}
                   half={true}
@@ -90,7 +111,7 @@ const Auth = () => {
             />
             {isSignup && (
               <Input
-                name="confirmpassword"
+                name="confirmPassword"
                 label="Repeat Password"
                 handleChange={handleChange}
                 type="password"
