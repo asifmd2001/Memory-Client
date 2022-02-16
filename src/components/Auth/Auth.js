@@ -135,7 +135,7 @@ const Auth = () => {
                 onClick={renderProps.onClick}
                 color="primary"
                 fullWidth
-                // disabled={renderProps.disabled}
+                disabled={isSignup}
                 startIcon={<Icon />}
                 variant="contained"
               >
