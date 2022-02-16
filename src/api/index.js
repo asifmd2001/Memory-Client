@@ -1,12 +1,15 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://Memory-Backend.mohamed-asifasi.repl.co"
+  // baseURL: "https://Memory-Backend.mohamed-asifasi.repl.co"
+  baseURL: "https://memory-app-127.herokuapp.com"
 });
 
-API.interceptors.request.use((req)=>{
-  if(localStorage.getItem('profile')){
-    req.headers.Authorization=`Bearer ${JSON.parse(localStorage.getItem('profile')).token}`;
+API.interceptors.request.use((req) => {
+  if (localStorage.getItem("profile")) {
+    req.headers.Authorization = `Bearer ${
+      JSON.parse(localStorage.getItem("profile")).token
+    }`;
   }
 
   return req;
